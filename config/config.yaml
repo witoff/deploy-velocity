@@ -1,0 +1,5 @@
+# All of the exchanges from: https://data.bitcoinity.org/markets/volume/30d/USD/clevercoin?t=a
+parse_headers: false
+urls:
+- https://www.coinbase.com/signin
+- https://www.gdax.com/trade/ETH-USD

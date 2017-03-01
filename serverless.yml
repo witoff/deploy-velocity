@@ -1,0 +1,36 @@
+service: deploy-velocity
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  timeout: 60
+
+  region: us-east-1
+
+  iamRoleStatements:
+   - Effect: "Allow"
+     Action:
+       - dynamodb:*
+     Resource: arn:aws:dynamodb:us-east-1:1234567890:table/deploy-velocity
+   - Effect: "Allow"
+     Action:
+       - "s3:ListBucket"
+     Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+   - Effect: "Allow"
+     Action:
+       - "s3:PutObject"
+     Resource:
+       Fn::Join:
+         - ""
+         - - "arn:aws:s3:::"
+           - "Ref" : "ServerlessDeploymentBucket"
+
+package:
+ include:
+   - main
+
+functions:
+  main:
+    handler: handler.main
+    events:
+      - schedule: rate(30 minutes)
